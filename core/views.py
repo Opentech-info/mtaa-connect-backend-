@@ -31,8 +31,13 @@ def api_root(request):
             "auth_login": f"{base_url}api/auth/login/",
             "auth_refresh": f"{base_url}api/auth/refresh/",
             "me": f"{base_url}api/me/",
+            "profile": f"{base_url}api/profile/",
             "requests": f"{base_url}api/requests/",
             "pending_requests": f"{base_url}api/requests/pending/",
+            "approved_requests": f"{base_url}api/requests/approved/",
+            "download_request": f"{base_url}api/requests/<id>/download/",
+            "reopen_request": f"{base_url}api/requests/<id>/reopen/",
+            "officer_stats": f"{base_url}api/stats/officer/",
             "docs": f"{base_url}docs/",
             "redoc": f"{base_url}redoc/",
         }

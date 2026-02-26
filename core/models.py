@@ -109,6 +109,7 @@ class VerificationRequest(models.Model):
     request_type = models.CharField(max_length=20, choices=RequestType.choices)
     purpose = models.CharField(max_length=255)
     additional_info = models.TextField(blank=True)
+    metadata = models.JSONField(default=dict, blank=True)
     urgency = models.CharField(max_length=20, choices=Urgency.choices, default=Urgency.NORMAL)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
     rejection_reason = models.TextField(blank=True)
