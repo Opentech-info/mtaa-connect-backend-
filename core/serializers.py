@@ -186,27 +186,30 @@ class VerificationRequestSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"purpose": "This field may not be blank."})
 
         metadata = attrs.get("metadata") or {}
-        if request_type == VerificationRequest.RequestType.RESIDENCE:
-            required_fields = [
-                "reference_no",
-                "to",
-                "ward",
-                "mtaa",
-                "region",
-                "district",
-                "house_no",
-                "birth_date",
-                "occupation",
-                "stay_duration",
-                "letter_date",
-            ]
-            errors = {}
-            for field in required_fields:
-                value = metadata.get(field)
-                if value is None or (isinstance(value, str) and not value.strip()):
-                    errors[field] = "This field is required."
-            if errors:
-                raise serializers.ValidationError({"metadata": errors})
+        required_fields = [
+            "reference_no",
+            "to",
+            "ward",
+            "mtaa",
+            "region",
+            "district",
+            "house_no",
+            "birth_date",
+            "occupation",
+            "stay_duration",
+            "letter_date",
+        ]
+        errors = {}
+        for field in required_fields:
+            value = metadata.get(field)
+            if value is None or (isinstance(value, str) and not value.strip()):
+                errors[field] = "This field is required."
+        if errors and request_type in {
+            VerificationRequest.RequestType.RESIDENCE,
+            VerificationRequest.RequestType.NIDA,
+            VerificationRequest.RequestType.LICENSE,
+        }:
+            raise serializers.ValidationError({"metadata": errors})
         return attrs
 
 
