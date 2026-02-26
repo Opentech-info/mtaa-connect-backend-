@@ -4,10 +4,10 @@ services:
     env: python
     plan: free
     buildCommand: |
-      pip install -r requirements.txt
-      python manage.py collectstatic --noinput
+      bash build.sh
     startCommand: |
       python manage.py migrate
+      python manage.py initadmin
       gunicorn backend.wsgi:application
     envVars:
       - key: DJANGO_DEBUG

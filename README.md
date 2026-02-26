@@ -23,14 +23,17 @@ See `.env.example` for required variables.
 1. Push this backend folder as its own repo (so `manage.py` is at repo root).
 2. On Render, create a Web Service from the repo.
 3. Use `render.yaml` (Blueprint) or configure:
-   - Build: `pip install -r requirements.txt` and `python manage.py collectstatic --noinput`
-   - Start: `python manage.py migrate` then `gunicorn backend.wsgi:application`
+   - Build: `bash build.sh`
+   - Start: `python manage.py migrate` then `python manage.py initadmin` then `gunicorn backend.wsgi:application`
 4. Set env vars:
    - `DJANGO_DEBUG=0`
    - `DJANGO_SECRET_KEY=...`
    - `DJANGO_ALLOWED_HOSTS=your-render-domain,mtaaconnect.azsubay.com`
    - `CORS_ALLOWED_ORIGINS=https://your-frontend-domain`
    - `CSRF_TRUSTED_ORIGINS=https://your-frontend-domain`
+   - `DJANGO_SUPERUSER_EMAIL=admin@example.com`
+   - `DJANGO_SUPERUSER_PASSWORD=strong-password`
+   - `DJANGO_SUPERUSER_FULL_NAME=Admin User`
    - DB credentials for production
 ## API
 - `POST /api/auth/register/`

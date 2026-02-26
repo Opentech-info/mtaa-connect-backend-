@@ -12,6 +12,7 @@ def home(request):
     context = {
         "status": "Online",
         "api_health_url": f"{base_url}api/health/",
+        "healthz_url": f"{base_url}healthz/",
         "api_docs_url": f"{base_url}docs/",
         "api_redoc_url": f"{base_url}redoc/",
         "admin_url": f"{base_url}admin/",
@@ -25,6 +26,7 @@ def api_root(request):
     return JsonResponse(
         {
             "health": f"{base_url}api/health/",
+            "healthz": f"{base_url}healthz/",
             "auth_register": f"{base_url}api/auth/register/",
             "auth_login": f"{base_url}api/auth/login/",
             "auth_refresh": f"{base_url}api/auth/refresh/",

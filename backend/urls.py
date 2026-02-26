@@ -13,6 +13,7 @@ from core import views as core_views
 
 urlpatterns = [
     path("", core_views.home),
+    path("healthz/", core_views.health),
     path("docs/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
     path("redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
