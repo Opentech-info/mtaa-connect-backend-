@@ -166,10 +166,30 @@ class CitizenRequestListCreate(generics.ListCreateAPIView):
         serializer.save(citizen=self.request.user)
 
 
-class RequestDetail(generics.RetrieveAPIView):
+class RequestDetail(generics.RetrieveUpdateAPIView):
     serializer_class = VerificationRequestSerializer
     permission_classes = [IsOwnerOrOfficer]
     queryset = VerificationRequest.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        if request.user != instance.citizen:
+            return Response(
+                {"detail": "Only the request owner can edit this request."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        if instance.status != VerificationRequest.Status.PENDING:
+            return Response(
+                {"detail": "Only pending requests can be edited."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 
 class ResubmitRequest(APIView):

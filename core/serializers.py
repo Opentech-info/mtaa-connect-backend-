@@ -185,7 +185,14 @@ class VerificationRequestSerializer(serializers.ModelSerializer):
         if purpose is not None and not str(purpose).strip():
             raise serializers.ValidationError({"purpose": "This field may not be blank."})
 
-        metadata = attrs.get("metadata") or {}
+        existing_meta = getattr(self.instance, "metadata", {}) if self.instance else {}
+        incoming_meta = attrs.get("metadata")
+        if incoming_meta is None:
+            metadata = existing_meta or {}
+        else:
+            # Merge so partial updates keep previously provided values while allowing overrides.
+            metadata = {**existing_meta, **incoming_meta}
+        attrs["metadata"] = metadata
         required_fields = [
             "reference_no",
             "to",
